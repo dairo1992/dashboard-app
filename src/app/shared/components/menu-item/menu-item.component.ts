@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
 import { MenuItem } from '../layout/layout.component';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'menu-item',
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './menu-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
