@@ -1,7 +1,7 @@
 <nav class="bg-base-100 border-b border-gray-300">
   <div class="flex justify-between items-center px-6 h-16">
     <!-- Ícono de Menú (cyan) -->
-    <a class="sm:block hidden" (click)="onToggleSidebar($event)">
+    <a class="sm:block hidden cursor-pointer" (click)="onToggleSidebar($event)">
       <i class="fas fa-bars text-primary text-lg"></i>
     </a>
     <!-- Logo (centrado) -->
@@ -10,12 +10,13 @@
     </div>
     <!-- Ícono de Notificación y Perfil -->
     <div class="space-x-4">
-      <a href="#" class="inline-block">
+      <!-- <a href="#" class="inline-block">
         <i class="fas fa-bell text-primary text-lg"></i>
-      </a>
+      </a> -->
       <!-- Botón de Perfil -->
       <a href="#" class="inline-block">
-        <i class="fas fa-user text-primary text-lg"></i>
+        <h4 class="hidden sm:block text-sm font-medium text-primary"><i
+            class="fas fa-user text-primary text-lg sm:mr-2"></i>USUARIO ACTIVO</h4>
       </a>
     </div>
   </div>
