@@ -1,0 +1,18 @@
+/* app.component.css */
+.menu-text {
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+}
+
+/* Animación para el texto que aparece en hover */
+.sidebar-item:hover .menu-text:not(.hidden) {
+  font-weight: 600;
+}
+
+/* Estilos para el menú en modo colapsado con hover */
+@media (min-width: 768px) {
+  .sidebar-item {
+    position: relative;
+    overflow: visible;
+  }
+}
