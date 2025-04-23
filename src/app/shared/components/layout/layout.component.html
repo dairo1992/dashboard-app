@@ -1,0 +1,24 @@
+<div class="flex flex-col min-h-screen">
+  <header (toggleSidebar)="toggleSidebar()"></header>
+  <div class="flex flex-col md:flex-row flex-grow">
+    <sidebar [isExpanded]="menuService.isExpanded()" [menuItems]="menuService.menuItems()">
+    </sidebar>
+    <div id="mainContent" class="w-full mx-2 sm:ml-16 md:ml-64 p-4 transition-all duration-300 ease-in-out bg-accent-content"
+      [class.md:ml-64]="menuService.isExpanded()" [class.md:ml-16]="menuService.isExpanded()">
+
+      <!-- Buscador con Icono -->
+      <div class="flex items-center w-full mt-2 mb-4">
+        <div class="relative w-full">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+            <i class="fas fa-search text-gray-300"></i>
+          </span>
+          <input type="text"
+            class="pl-10 pr-4 py-2 rounded-full border border-gray-300 w-full text-sm placeholder-gray-400"
+            placeholder="Buscar..." />
+        </div>
+      </div>
+
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

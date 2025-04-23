@@ -1,0 +1,18 @@
+<a [routerLink]="item.link" class="sidebar-item px-3 py-3 flex items-center relative rounded-lg group"
+  [class.bg-primary]="item.active" [class.text-base-100]="item.active" [class.text-gray-500]="!item.active"
+  [class.hover:bg-gray-100]="!item.active" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+
+  <i class="fas {{ item.icon }} text-lg"></i>
+  @if (isExpanded) {
+  <span class="font-medium menu-text ml-4" [class.hidden]="!isExpanded && !isHovered()"
+    [class.absolute]="!isExpanded && isHovered()" [class.left-10]="!isExpanded && isHovered()"
+    [class.bg-primary]="!isExpanded && isHovered() && item.active"
+    [class.bg-base-100]="!isExpanded && isHovered() && !item.active"
+    [class.text-base-100]="!isExpanded && isHovered() && item.active" [class.py-1]="!isExpanded && isHovered()"
+    [class.px-3]="!isExpanded && isHovered()" [class.rounded-r-lg]="!isExpanded && isHovered()"
+    [class.z-10]="!isExpanded && isHovered()">
+    {{ item.label }}
+  </span>
+  }
+
+</a>

@@ -1,15 +1,21 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-header',
+  selector: 'header',
   imports: [],
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`
+    a:hover {
+      opacity: 0.8;
+    }
+  `]
 })
 export class HeaderComponent {
-  isExpanded = false;
-  toggleMenu(event: Event): void {
+  @Output() toggleSidebar = new EventEmitter<void>();
+
+  onToggleSidebar(event: Event): void {
     event.preventDefault();
-    this.isExpanded = !this.isExpanded;
+    this.toggleSidebar.emit();
   }
 }
