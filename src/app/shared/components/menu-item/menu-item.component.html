@@ -1,18 +1,24 @@
-<a [routerLink]="item.link" class="sidebar-item px-3 py-3 flex items-center relative rounded-lg group hover:bg-gray-100 hover:text-base-100"
-  routerLinkActive="bg-primary text-base-100" [class.text-base-100]="item.active" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-
+<a [routerLink]="item.link" class="sidebar-item px-3 py-3 flex items-center relative rounded-lg group"
+  [class.hover:bg-gray-100]="isExpanded || isHovered()" [class.hover:text-base-100]="isExpanded || isHovered()"
+  routerLinkActive="bg-primary text-base-100" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
 
   <i class="fas {{ item.icon }} text-lg"></i>
-  @if (isExpanded) {
-  <span class="font-medium menu-text ml-4" [class.hidden]="!isExpanded && !isHovered()"
+
+  <!-- <span class="font-medium menu-text ml-4" [class.hidden]="!isExpanded && !isHovered()"
     [class.absolute]="!isExpanded && isHovered()" [class.left-10]="!isExpanded && isHovered()"
-    [class.bg-primary]="!isExpanded && isHovered() && item.active"
-    [class.bg-base-100]="!isExpanded && isHovered() && !item.active"
-    [class.text-base-100]="!isExpanded && isHovered() && item.active" [class.py-1]="!isExpanded && isHovered()"
+    routerLinkActive="text-base-100 bg-primary" [class.py-1]="!isExpanded && isHovered()"
+    [class.px-3]="!isExpanded && isHovered()" [class.rounded-r-lg]="!isExpanded && isHovered()"
+    [class.z-10]="!isExpanded && isHovered()">
+    {{ item.label }}
+  </span> -->
+  <span class="font-medium menu-text ml-4" [class.hidden]="!isExpanded && !isHovered()"
+    [class.bg-base-100]="!isExpanded && isHovered()"
+    [class.text-primary]="!isExpanded && isHovered()" [class.absolute]="!isExpanded && isHovered()"
+    [class.left-10]="!isExpanded && isHovered()" [class.py-1]="!isExpanded && isHovered()"
     [class.px-3]="!isExpanded && isHovered()" [class.rounded-r-lg]="!isExpanded && isHovered()"
     [class.z-10]="!isExpanded && isHovered()">
     {{ item.label }}
   </span>
-  }
-
 </a>
+<!-- {{isHovered()}} -->
+<!-- [class.text-base-100]="!isExpanded && isHovered() && item.active" -->
