@@ -43,7 +43,7 @@ export class MenuService {
       id: 'transacciones',
       label: 'Transacciones',
       icon: 'fa-exchange-alt',
-      link: '#',
+      link: '/usuarios',
       active: false
     },
     {

@@ -9,7 +9,12 @@ export const routes: Routes = [
       {
         path: 'home',
         loadComponent: () => import('./modules/home/home.component')
-      }
+      },
+      {
+        path: 'usuarios',
+        loadComponent: () => import('./modules/usuarios/usuarios.component')
+      },
+      { path: '**', redirectTo: 'home' }
     ]
   },
   { path: '**', redirectTo: '' }

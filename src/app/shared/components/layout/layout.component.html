@@ -1,9 +1,9 @@
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col h-screen">
   <header (toggleSidebar)="toggleSidebar()"></header>
   <div class="flex flex-col md:flex-row flex-grow">
     <sidebar [isExpanded]="menuService.isExpanded()" [menuItems]="menuService.menuItems()">
     </sidebar>
-    <div id="mainContent" class="w-full mx-2 sm:ml-16 md:ml-64 p-4 transition-all duration-300 ease-in-out bg-accent-content"
+    <div id="mainContent" class="w-full h-full mx-2 sm:ml-16 md:ml-64 p-4 transition-all duration-300 ease-in-out bg-accent-content"
       [class.md:ml-64]="menuService.isExpanded()" [class.md:ml-16]="menuService.isExpanded()">
 
       <!-- Buscador con Icono -->
