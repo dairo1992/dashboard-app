@@ -29,6 +29,8 @@
     "@angular-devkit/build-angular": "^19.2.5",
     "@angular/cli": "^19.2.5",
     "@angular/compiler-cli": "^19.2.0",
+    "@iconify/json": "^2.2.330",
+    "@iconify/tailwind4": "^1.0.6",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.6.0",
     "karma": "~6.4.0",

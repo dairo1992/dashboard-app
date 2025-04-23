@@ -14,42 +14,43 @@ export class MenuService {
     {
       id: 'inicio',
       label: 'Inicio',
-      icon: 'fa-home',
+      icon: 'icon-[lets-icons--home-duotone]',
+      // icon: 'fa-home',
       link: '/home',
       active: true
     },
     {
       id: 'autorizaciones',
       label: 'Autorizaciones',
-      icon: 'fa-check-circle',
+      icon: 'icon-[lets-icons--check-fill]',
       link: '#',
       active: false
     },
     {
       id: 'usuarios',
       label: 'Usuarios',
-      icon: 'fa-users',
+      icon: 'icon-[fa--users]',
       link: '#',
       active: false
     },
     {
       id: 'comercios',
       label: 'Comercios',
-      icon: 'fa-store',
+      icon: 'icon-[la--store-alt]',
       link: '#',
       active: false
     },
     {
       id: 'transacciones',
       label: 'Transacciones',
-      icon: 'fa-exchange-alt',
+      icon: 'icon-[uil--exchange-alt]',
       link: '/usuarios',
       active: false
     },
     {
       id: 'cerrar-sesion',
       label: 'Cerrar sesión',
-      icon: 'fa-sign-out-alt',
+      icon: 'icon-[fluent--sign-out-24-filled]',
       link: '#',
       active: false
     },
