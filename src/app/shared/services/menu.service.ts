@@ -53,6 +53,90 @@ export class MenuService {
       link: '#',
       active: false
     },
+    {
+      id: 'inicio',
+      label: 'Inicio',
+      icon: 'fa-home',
+      link: '/home',
+      active: true
+    },
+    {
+      id: 'autorizaciones',
+      label: 'Autorizaciones',
+      icon: 'fa-check-circle',
+      link: '#',
+      active: false
+    },
+    {
+      id: 'usuarios',
+      label: 'Usuarios',
+      icon: 'fa-users',
+      link: '#',
+      active: false
+    },
+    {
+      id: 'comercios',
+      label: 'Comercios',
+      icon: 'fa-store',
+      link: '#',
+      active: false
+    },
+    {
+      id: 'transacciones',
+      label: 'Transacciones',
+      icon: 'fa-exchange-alt',
+      link: '/usuarios',
+      active: false
+    },
+    {
+      id: 'cerrar-sesion',
+      label: 'Cerrar sesión',
+      icon: 'fa-sign-out-alt',
+      link: '#',
+      active: false
+    },
+    {
+      id: 'inicio',
+      label: 'Inicio',
+      icon: 'fa-home',
+      link: '/home',
+      active: true
+    },
+    {
+      id: 'autorizaciones',
+      label: 'Autorizaciones',
+      icon: 'fa-check-circle',
+      link: '#',
+      active: false
+    },
+    {
+      id: 'usuarios',
+      label: 'Usuarios',
+      icon: 'fa-users',
+      link: '#',
+      active: false
+    },
+    {
+      id: 'comercios',
+      label: 'Comercios',
+      icon: 'fa-store',
+      link: '#',
+      active: false
+    },
+    {
+      id: 'transacciones',
+      label: 'Transacciones',
+      icon: 'fa-exchange-alt',
+      link: '/usuarios',
+      active: false
+    },
+    {
+      id: 'cerrar-sesion',
+      label: 'Cerrar sesión',
+      icon: 'fa-sign-out-alt',
+      link: '#',
+      active: false
+    },
   ]);
 
   constructor() { }
