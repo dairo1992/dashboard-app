@@ -3,6 +3,7 @@ import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from "../sidebar/sidebar.component";
 import { MenuService } from '../../services/menu.service';
 import { RouterOutlet } from '@angular/router';
+import { AlertComponent } from "../alert/alert.component";
 
 
 export interface MenuItem {
@@ -15,7 +16,7 @@ export interface MenuItem {
 
 @Component({
   selector: 'app-layout',
-  imports: [HeaderComponent, SidebarComponent, RouterOutlet],
+  imports: [HeaderComponent, SidebarComponent, RouterOutlet, AlertComponent],
   templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
