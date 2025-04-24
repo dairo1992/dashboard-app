@@ -1,87 +1,151 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, input, OnDestroy, output, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, inject, input, OnDestroy, OnInit, output, signal, WritableSignal } from '@angular/core';
 import { finalize, interval, Subscription, takeWhile } from 'rxjs';
+import { AlertService, AlertType } from '../../services/alert.service';
 
-const AlertType = {
-  info: 'alert-info',
-  success: 'alert-success',
-  warning: 'alert-warning',
-  error: 'alert-error'
-} as const;
-
-type AlertType = typeof AlertType[keyof typeof AlertType];
 
 @Component({
   selector: 'alert',
-  imports: [],
+  standalone: true,
   templateUrl: './alert.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AlertComponent implements OnDestroy {
+export class AlertComponent implements OnInit, OnDestroy {
+  alertService = inject(AlertService);
   messageInput = input<string>('');
-  typeInput = input<'info' | 'success' | 'warning' | 'error' | 'loading'>('info');
+  typeInput = input<AlertType>('info');
   autoHideDurationInput = input<number>(5000);
-  colorBar = signal<string>('');
 
+  // Output para notificar cuando la alerta se ha ocultado
   hidden = output<void>();
 
-  private currentMessage: WritableSignal<string> = signal('');
-  private currentType: WritableSignal<'info' | 'success' | 'warning' | 'error' | 'loading'> = signal('info');
+  // Señales para state interno del componente
+  colorBar = signal<string>('');
+  currentMessage: WritableSignal<string> = signal('');
+  currentType: WritableSignal<AlertType> = signal('info');
   isVisible: WritableSignal<boolean> = signal(false);
   timerProgress: WritableSignal<number> = signal(100);
+
+  // Guardamos un ID para identificar cada alerta mostrada
+  private currentAlertId = signal<number>(0);
+
   private timerSubscription: Subscription | null = null;
+  private alertVisibilityEffectRef: ReturnType<typeof effect> | null = null;
 
-  showAlert(
-    message?: string,
-    type?: 'info' | 'success' | 'warning' | 'error' | 'loading',
-    duration?: number
-  ): void {
-    const color = type == 'info' ? 'bg-info' : type == 'success' ? 'bg-success' : type == 'warning' ? 'bg-warning' : type == 'loading' ? 'bg-primary' : 'bg-error';
-    this.colorBar.set(color);
-    this.currentMessage.set(message ?? this.messageInput());
-    this.currentType.set(type ?? this.typeInput());
-    const effectiveDuration = (this.currentType() === 'loading') ? 0 : (duration ?? this.autoHideDurationInput());
 
-    this.isVisible.set(true);
-    this.timerProgress.set(100);
-    if (effectiveDuration > 0) {
-      this.startTimer(effectiveDuration);
-    } else {
-      this.stopTimer(); // Aseguramos que no haya temporizador corriendo para 'loading' o alertas manuales.
+  ngOnInit(): void {
+    this.setupAlertVisibilityEffect();
+  }
+
+  private setupAlertVisibilityEffect(): void {
+    this.alertVisibilityEffectRef = effect(() => {
+      const isVisible = this.alertService.isVisible();
+      const serviceAlertId = this.alertService.alertId();
+
+      // Detecta cambios en el ID de alerta o visibilidad
+      if (isVisible) {
+        // Actualizamos el ID para rastrear esta alerta específica
+        this.currentAlertId.set(serviceAlertId);
+
+        // Actualizar información de la alerta
+        this.currentMessage.set(this.alertService.message());
+        this.currentType.set(this.alertService.type());
+        const type = this.alertService.type();
+        const color = this.getColorForType(type);
+        this.colorBar.set(color);
+
+        // Mostrar alerta y configurar temporizador
+        this.isVisible.set(true);
+        this.timerProgress.set(100);
+
+        const duration = this.alertService.duration();
+        if (duration > 0) {
+          this.startTimer(duration);
+        } else {
+          this.stopTimer();
+        }
+      } else {
+        // Ocultar la alerta cuando el servicio indica que debe ocultarse
+        if (this.isVisible()) {
+          this.hideAlert();
+        }
+      }
+    });
+  }
+
+  private getColorForType(type: AlertType): string {
+    switch (type) {
+      case 'info': return 'bg-info';
+      case 'success': return 'bg-success';
+      case 'warning': return 'bg-warning';
+      case 'error': return 'bg-error';
+      case 'loading': return 'bg-primary';
+      default: return 'bg-info';
     }
   }
 
+  // Este método ahora puede usarse como API directa del componente también
+  showAlert(
+    message?: string,
+    type?: AlertType,
+    duration?: number
+  ): void {
+    const effectiveMessage = message ?? this.messageInput();
+    const effectiveType = type ?? this.typeInput();
+    const effectiveDuration = (effectiveType === 'loading') ? 0 : (duration ?? this.autoHideDurationInput());
+
+    // Ocultar primero para reiniciar
+    this.isVisible.set(false);
+    this.stopTimer();
+
+    // Configurar y mostrar después de un breve timeout para permitir que Angular actualice la vista
+    setTimeout(() => {
+      const color = this.getColorForType(effectiveType);
+      this.colorBar.set(color);
+      this.currentMessage.set(effectiveMessage);
+      this.currentType.set(effectiveType);
+
+      this.isVisible.set(true);
+      this.timerProgress.set(100);
+
+      if (effectiveDuration > 0) {
+        this.startTimer(effectiveDuration);
+      }
+    }, 0);
+  }
+
   hideAlert(): void {
-    // Solo procede si la alerta está actualmente visible
     if (this.isVisible()) {
-      this.isVisible.set(false); // Oculta la alerta
-      this.stopTimer(); // Detiene cualquier temporizador activo
-      this.hidden.emit(); // Emite el output 'hidden'
+      this.isVisible.set(false);
+      this.stopTimer();
+      this.timerProgress.set(100); // Reiniciamos la barra de progreso
+      this.hidden.emit();
     }
   }
 
   // Método helper para obtener la clase de alerta de DaisyUI
   alertType(): string {
-    return `alert-${this.currentType()}`; // Lee el valor de la signal currentType
+    return `alert-${this.currentType()}`;
   }
 
   // Método helper para obtener el mensaje de la alerta
   alertMessage(): string {
-    return this.currentMessage(); // Lee el valor de la signal currentMessage
+    return this.currentMessage();
   }
 
   private startTimer(duration: number): void {
-    this.stopTimer(); // Detiene cualquier temporizador existente antes de iniciar uno nuevo
+    this.stopTimer();
 
     if (duration <= 0) {
       return;
     }
 
-    const intervalDuration = 50; // Frecuencia de actualización de la barra (cada 50ms)
-    const totalSteps = duration / intervalDuration; // Número total de "pasos" para completar la duración
-    let currentStep = 0; // Contador de pasos
+    const intervalDuration = 50;
+    const totalSteps = duration / intervalDuration;
+    let currentStep = 0;
+
     this.timerSubscription = interval(intervalDuration)
       .pipe(
-        takeWhile(() => currentStep <= totalSteps && this.isVisible()), // Usamos isVisible() para leer la signal
+        takeWhile(() => currentStep <= totalSteps && this.isVisible()),
         finalize(() => {
           if (this.isVisible()) {
             this.hideAlert();
@@ -89,26 +153,26 @@ export class AlertComponent implements OnDestroy {
         })
       )
       .subscribe(() => {
-        // En cada emisión del intervalo (cada 50ms):
-        currentStep++; // Incrementamos el contador de pasos
-        // Calculamos el porcentaje restante de la barra de progreso
+        currentStep++;
         const progress = 100 - (currentStep / totalSteps) * 100;
-        // Actualizamos la signal timerProgress. Usamos Math.max(0, progress) para asegurar que no baje de 0.
         this.timerProgress.set(Math.max(0, progress));
       });
   }
 
-  // Detiene el temporizador si está activo
   private stopTimer(): void {
     if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe(); // Cancela la suscripción al observable
-      this.timerSubscription = null; // Limpia la referencia para que pueda ser recolectada por el garbage collector
+      this.timerSubscription.unsubscribe();
+      this.timerSubscription = null;
     }
   }
 
-  // Hook del ciclo de vida: se llama cuando el componente se destruye
-  // Es crucial para evitar fugas de memoria al limpiar la suscripción del temporizador
   ngOnDestroy(): void {
-    this.stopTimer(); // Asegúrate de detener el temporizador
+    this.stopTimer();
+
+    // Limpiar el efecto de visibilidad
+    if (this.alertVisibilityEffectRef) {
+      this.alertVisibilityEffectRef.destroy();
+      this.alertVisibilityEffectRef = null;
+    }
   }
 }
