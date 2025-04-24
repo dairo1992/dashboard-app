@@ -1,8 +1,4 @@
-<div class="flex items-end justify-end w-64">
-  <div role="alert" class="alert alert-info alert-soft">
-    <span>12 unread messages. Tap to see.</span>
-  </div>
-</div>
+<alert />
 <div class="bg-white sm:w-120 h-screen sm:h-full rounded-lg m-5 sm:m-15">
   <div class="container flex flex-col mx-auto bg-white rounded-lg pt-12 my-5">
     <div class="flex justify-center w-full h-full my-auto xl:gap-14 lg:justify-normal md:gap-5">
@@ -26,9 +22,10 @@
               <span class="icon-[mdi--user] text-2xl"></span>
               <input type="input" formControlName="username" placeholder="Username" />
             </label>
-            @if(formutils.isValidField(loginForm, 'emailValid')){
+            @if(formutils.isValidField(loginForm, 'username')){
             <span class="form-text text-danger">
-              {{formutils.getFieldError(loginForm, 'name', 'Debe de ser en formato de nombre y apellido')}}
+              {{formutils.getFieldError(loginForm, 'min')}}
+
             </span>
             }
             <!-- <p class="validator-hint">
