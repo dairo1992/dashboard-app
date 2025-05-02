@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal, Type, ViewChild } f
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { FormUtils } from '../../../utils/form-utils';
 import { AlertComponent } from "../../../shared/components/alert/alert.component";
+import { AlertService } from '../../../shared/services/alert.service';
 
 
 
@@ -17,7 +18,8 @@ export default class LoginPageComponent {
   fb: FormBuilder = inject(FormBuilder);
   loginForm: FormGroup;
   keepLoggedIn: boolean = true;
-  @ViewChild(AlertComponent, { static: false }) alertComponent!: AlertComponent;
+  alertService = inject(AlertService);
+  showPassword = signal<boolean>(false);
 
 
   constructor() {
@@ -55,8 +57,13 @@ export default class LoginPageComponent {
   googleSignIn() {
     // Implementar autenticación con Google
     console.log('Google sign in clicked');
-    this.alertComponent.showAlert('Cargando datos...', 'warning');
+    this.alertService.loading("Cargando")
     // this.alertComponent.showAlert('Iniciando sesión con Google', 'loading');
+  }
+
+
+  togglePasswordVisibility(): void {
+    this.showPassword.set(!this.showPassword())
   }
 
 }
