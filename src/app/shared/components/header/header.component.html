@@ -1,4 +1,4 @@
-<nav class="bg-base-100 border-b border-gray-300">
+<nav class="bg-base-100">
   <div class="flex justify-between items-center px-6 h-16">
     <!-- Ícono de Menú (cyan) -->
     <a class="sm:block hidden cursor-pointer" (click)="onToggleSidebar($event)">
@@ -17,7 +17,7 @@
       <!-- Botón de Perfil -->
       <a href="#" class="inline-block">
         <h4 class="hidden sm:block text-sm font-medium text-primary"><i
-            class="fas fa-user text-primary text-lg sm:mr-2"></i>USUARIO ACTIVO</h4>
+            class="fas fa-user text-primary text-lg sm:mr-2"></i>{{user()?.name}}</h4>
       </a>
     </div>
   </div>

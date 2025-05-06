@@ -1,5 +1,8 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { MenuItem } from '../components/layout/layout.component';
+import { AuthService } from '../../auth/services/auth.service';
+import { AlertService } from './alert.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -8,6 +11,9 @@ import { MenuItem } from '../components/layout/layout.component';
 export class MenuService {
   // Signal para el estado de expansión del menú
   isExpanded = signal<boolean>(false);
+  authService = inject(AuthService);
+  alertService = inject(AlertService);
+  router = inject(Router);
 
   // Signal para los elementos del menú
   menuItems = signal<MenuItem[]>([
@@ -17,42 +23,58 @@ export class MenuService {
       icon: 'icon-[lets-icons--home-duotone]',
       // icon: 'fa-home',
       link: '/home',
-      active: true
+      active: true,
+      function: () => {
+        console.log("inicio");
+
+      }
     },
     {
       id: 'autorizaciones',
       label: 'Autorizaciones',
       icon: 'icon-[lets-icons--check-fill]',
       link: '#',
-      active: false
+      active: false,
+      function: () => { }
     },
     {
       id: 'usuarios',
       label: 'Usuarios',
       icon: 'icon-[fa--users]',
-      link: '#',
-      active: false
+      link: '/usuarios',
+      active: false,
+      function: () => { }
     },
     {
       id: 'comercios',
       label: 'Comercios',
       icon: 'icon-[la--store-alt]',
       link: '#',
-      active: false
+      active: false,
+      function: () => { }
     },
     {
       id: 'transacciones',
       label: 'Transacciones',
       icon: 'icon-[uil--exchange-alt]',
-      link: '/usuarios',
-      active: false
+      link: '#',
+      active: false,
+      function: () => { }
     },
     {
       id: 'cerrar-sesion',
       label: 'Cerrar sesión',
       icon: 'icon-[fluent--sign-out-24-filled]',
       link: '#',
-      active: false
+      active: false,
+      function: () => {
+        this.authService.logout().subscribe({
+          next: (value) => {
+            this.alertService.info("Hasta pronto");
+            this.router.navigateByUrl('/auth');
+          }
+        })
+      }
     },
   ]);
 
@@ -82,7 +104,8 @@ export class MenuService {
     this.menuItems.update(current =>
       current.map(item => ({
         ...item,
-        active: item.id === id
+        active: item.id === id,
+        function: () => { }
       }))
     );
   }

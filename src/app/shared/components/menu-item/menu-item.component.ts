@@ -34,4 +34,8 @@ export class MenuItemComponent {
   onMouseLeave(): void {
     this.isHovered.set(false);
   }
+
+  function(fnc: Function) {
+    fnc();
+  }
 }

@@ -11,6 +11,7 @@ export interface MenuItem {
   icon: string;
   link: string;
   active: boolean;
+  function: Function;
 }
 
 @Component({

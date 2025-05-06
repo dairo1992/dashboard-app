@@ -1,6 +1,8 @@
+<!-- @if(item.id != 'cerrar-sesion'){ -->
 <a [routerLink]="item.link" class="sidebar-item px-3 py-3 flex items-center relative rounded-lg group"
   [class.hover:bg-gray-100]="isExpanded || isHovered()" [class.hover:text-base-100]="isExpanded || isHovered()"
-  routerLinkActive="bg-primary text-base-100" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+  routerLinkActive="bg-primary text-base-100" (click)="item.function" (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()" (click)="function(item.function)">
 
   <i class="fas {{ item.icon }} text-lg"></i>
 
@@ -12,3 +14,20 @@
     {{ item.label }}
   </span>
 </a>
+<!-- } -->
+<!-- @else {
+<a class="sidebar-item px-3 py-3 flex items-center relative rounded-lg group cursor-pointer"
+  [class.hover:bg-gray-100]="isExpanded || isHovered()" [class.hover:text-base-100]="isExpanded || isHovered()"
+  (click)="function(item.function)" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+
+  <i class="fas {{ item.icon }} text-lg"></i>
+
+  <span class="font-medium menu-text ml-4" [class.hidden]="!isExpanded && !isHovered()"
+    [class.bg-base-100]="!isExpanded && isHovered()" [class.text-primary]="!isExpanded && isHovered()"
+    [class.absolute]="!isExpanded && isHovered()" [class.left-10]="!isExpanded && isHovered()"
+    [class.py-1]="!isExpanded && isHovered()" [class.px-3]="!isExpanded && isHovered()"
+    [class.rounded-r-lg]="!isExpanded && isHovered()" [class.z-10]="!isExpanded && isHovered()">
+    {{ item.label }}
+  </span>
+</a>
+} -->

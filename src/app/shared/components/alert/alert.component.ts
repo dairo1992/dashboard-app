@@ -31,12 +31,8 @@ export class AlertComponent implements OnInit, OnDestroy {
   private timerSubscription: Subscription | null = null;
   private alertVisibilityEffectRef: ReturnType<typeof effect> | null = null;
 
-
-  ngOnInit(): void {
-    this.setupAlertVisibilityEffect();
-  }
-
-  private setupAlertVisibilityEffect(): void {
+  // Definir el effect en el constructor o como una inicialización de campo
+  constructor() {
     this.alertVisibilityEffectRef = effect(() => {
       const isVisible = this.alertService.isVisible();
       const serviceAlertId = this.alertService.alertId();
@@ -70,6 +66,10 @@ export class AlertComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  ngOnInit(): void {
+    // Ya no necesitamos llamar a setupAlertVisibilityEffect aquí
   }
 
   private getColorForType(type: AlertType): string {

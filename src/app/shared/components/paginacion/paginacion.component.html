@@ -1,0 +1,7 @@
+<div class="join flex justify-center items-center">
+  @for (pagina of listaPaginas(); track pagina) {
+  <button class="join-item btn btn-square mr-2" type="radio" name="options" checked="checked"
+    [class.btn-primary]="pagina === paginaActiva()" [routerLink]="[]" [queryParams]="{page: pagina}"
+    (click)="paginaActiva.set(pagina)">{{pagina}}</button>
+  }
+ </div>

@@ -18,35 +18,37 @@
               <p class="mx-4 text-gray-600">or</p>
               <hr class="h-0 border-b border-solid border-gray-500 grow">
             </div>
-            <label class="input mb-4">
+            <label class="input">
               <span class="icon-[mdi--user] text-2xl"></span>
               <input type="input" formControlName="username" placeholder="Username" />
             </label>
             @if(formutils.isValidField(loginForm, 'username')){
-            <span class="form-text text-danger">
-              {{formutils.getFieldError(loginForm, 'min')}}
-
+            <span class="text-red-500 text-sm mt-0">
+              {{formutils.getFieldError(loginForm, 'username')}}
             </span>
             }
             <!-- <p class="validator-hint">
               Must be 3 to 30 characters
               <br />containing only letters, numbers or dash
             </p> -->
-            <label class="input mb-4 relative">
+            <label class="input mt-4 relative">
               <span class="icon-[fluent--password-16-filled] text-2xl"></span>
               <input [type]="showPassword() ? 'text' : 'password'" formControlName="password" placeholder="Password" />
               @if(!showPassword){
-                <span (click)="togglePasswordVisibility()" class="icon-[hugeicons--eye] text-xl cursor-pointer absolute right-4"></span>
+              <span (click)="togglePasswordVisibility()"
+                class="icon-[hugeicons--eye] text-xl cursor-pointer absolute right-4"></span>
               }
               @else {
-                <span (click)="togglePasswordVisibility()" class="icon-[mdi--eye-off] text-xl cursor-pointer absolute right-4"></span>
+              <span (click)="togglePasswordVisibility()"
+                class="icon-[mdi--eye-off] text-xl cursor-pointer absolute right-4"></span>
               }
-              </label>
-            <!-- <p class="validator-hint hidden">
-              Must be more than 8 characters, including
-              <br />At least one number <br />At least one lowercase letter <br />At least one uppercase letter
-            </p> -->
-            <div class="flex justify-between mb-8">
+            </label>
+            @if(formutils.isValidField(loginForm, 'password')){
+            <span class="text-red-500 text-sm mt-0">
+              {{formutils.getFieldError(loginForm, 'password')}}
+            </span>
+            }
+            <div class="flex justify-between mt-4 mb-8">
               <label class="inline-flex items-center cursor-pointer">
                 <input type="checkbox" checked class="sr-only peer">
                 <input type="checkbox" formControlName="rememberMe" checked="checked"
